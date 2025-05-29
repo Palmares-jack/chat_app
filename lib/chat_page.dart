@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:chat_app/widgets/chat_bubble.dart';
-import 'package:chat_app/widgets/chat_input.dart';
+import 'package:chat_app/chat_bubble.dart';
+import 'package:chat_app/chat_input.dart';
 
 class ChatPage extends StatelessWidget {
   final String username;
+
   const ChatPage({Key? key, required this.username}) : super(key: key);
 
   @override
@@ -11,16 +12,14 @@ class ChatPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.black12,
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
         centerTitle: true,
         title: Text('Hi $username!'),
         actions: [
           IconButton(
+            icon: const Icon(Icons.logout),
             onPressed: () {
-              Navigator.pop(context);
+              Navigator.pushReplacementNamed(context, '/');
             },
-            icon: const Icon(Icons.logout, color: Colors.black),
           ),
         ],
       ),
@@ -31,8 +30,9 @@ class ChatPage extends StatelessWidget {
               padding: const EdgeInsets.all(16),
               itemCount: 10,
               itemBuilder: (_, i) => ChatBubble(
-                alignment:
-                i.isEven ? Alignment.centerLeft : Alignment.centerRight,
+                alignment: i.isEven
+                    ? Alignment.centerLeft
+                    : Alignment.centerRight,
                 message: 'Hello, this is Ivan!',
               ),
             ),

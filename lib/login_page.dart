@@ -20,10 +20,14 @@ class _LoginPageState extends State<LoginPage> {
 
   void _loginUser() {
     if (_formKey.currentState?.validate() ?? false) {
-      final username = _userNameController.text;
-      Navigator.pushNamed(context, '/chat', arguments: username);
+      final username = _userNameController.text.trim();
+      Navigator.pushReplacementNamed(
+        context,
+        '/chat',
+        arguments: username,
+      );
     } else {
-      debugPrint('Form is invalid');
+      debugPrint('Form validation failed');
     }
   }
 
@@ -58,15 +62,15 @@ class _LoginPageState extends State<LoginPage> {
                 TextFormField(
                   controller: _userNameController,
                   decoration: const InputDecoration(
-                    hintText: 'Add your username',
+                    hintText: 'Username',
                     border: OutlineInputBorder(),
                   ),
                   validator: (v) {
                     if (v == null || v.isEmpty) {
-                      return 'Please type your username';
+                      return 'Please enter a username';
                     }
                     if (v.length < 5) {
-                      return 'Username must be at least 5 characters';
+                      return 'At least 5 characters required';
                     }
                     return null;
                   },
@@ -76,11 +80,11 @@ class _LoginPageState extends State<LoginPage> {
                   controller: _passwordController,
                   obscureText: true,
                   decoration: const InputDecoration(
-                    hintText: 'Type your password',
+                    hintText: 'Password',
                     border: OutlineInputBorder(),
                   ),
                   validator: (v) =>
-                  (v == null || v.isEmpty) ? 'Please type your password' : null,
+                  (v == null || v.isEmpty) ? 'Please enter a password' : null,
                 ),
                 const SizedBox(height: 24),
                 ElevatedButton(
@@ -88,26 +92,6 @@ class _LoginPageState extends State<LoginPage> {
                   child: const Padding(
                     padding: EdgeInsets.symmetric(vertical: 12),
                     child: Text('Login', style: TextStyle(fontSize: 24)),
-                  ),
-                ),
-                const SizedBox(height: 16),
-                InkWell(
-                  splashColor: Colors.red,
-                  onTap: () => debugPrint('Link clicked!'),
-                  onDoubleTap: () => debugPrint('Double tapped!'),
-                  onLongPress: () => debugPrint('Long pressed!'),
-                  child: Column(
-                    children: const [
-                      Text('Find us on'),
-                      SizedBox(height: 4),
-                      Text(
-                        'https://google.com',
-                        style: TextStyle(
-                          color: Colors.blue,
-                          decoration: TextDecoration.underline,
-                        ),
-                      ),
-                    ],
                   ),
                 ),
               ],
