@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:chat_app/counter_stateful_demo.dart';
 import 'package:chat_app/login_page.dart';
 import 'package:chat_app/chat_page.dart';
+import 'package:chat_app/counter_stateful_demo.dart';
 
 void main() {
   runApp(const ChatApp());
@@ -21,10 +21,15 @@ class ChatApp extends StatelessWidget {
           foregroundColor: Colors.black,
         ),
       ),
-      // Pick one home:
-      // home: CounterStateful(buttonColor: Colors.blue),
-      // home: const LoginPage(),
-      home: const ChatPage(),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => const LoginPage(),
+        '/chat': (context) {
+          final username = ModalRoute.of(context)!.settings.arguments as String;
+          return ChatPage(username: username);
+        },
+        // '/counter': (context) => CounterStateful(buttonColor: Colors.blue),
+      },
     );
   }
 }

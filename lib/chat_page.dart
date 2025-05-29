@@ -30,14 +30,11 @@ class ChatPage extends StatelessWidget {
             child: ListView.builder(
               padding: const EdgeInsets.all(16),
               itemCount: 10,
-              itemBuilder: (context, index) {
-                return ChatBubble(
-                  alignment: index.isEven
-                      ? Alignment.centerLeft
-                      : Alignment.centerRight,
-                  message: 'Hello, this is Ivan!',
-                );
-              },
+              itemBuilder: (_, i) => ChatBubble(
+                alignment:
+                i.isEven ? Alignment.centerLeft : Alignment.centerRight,
+                message: 'Hello, this is Ivan!',
+              ),
             ),
           ),
           const ChatInput(),

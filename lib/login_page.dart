@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:chat_app/widgets/chat_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -9,8 +8,8 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController _userNameController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
+  final _userNameController = TextEditingController();
+  final _passwordController = TextEditingController();
 
   @override
   void dispose() {
@@ -19,14 +18,10 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
   }
 
-  void _loginUser(BuildContext context) {
+  void _loginUser() {
     if (_formKey.currentState?.validate() ?? false) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (_) => ChatPage(username: _userNameController.text),
-        ),
-      );
+      final username = _userNameController.text;
+      Navigator.pushNamed(context, '/chat', arguments: username);
     } else {
       debugPrint('Form is invalid');
     }
@@ -67,8 +62,12 @@ class _LoginPageState extends State<LoginPage> {
                     border: OutlineInputBorder(),
                   ),
                   validator: (v) {
-                    if (v == null || v.isEmpty) return 'Please type your username';
-                    if (v.length < 5) return 'Username must be ≥ 5 characters';
+                    if (v == null || v.isEmpty) {
+                      return 'Please type your username';
+                    }
+                    if (v.length < 5) {
+                      return 'Username must be at least 5 characters';
+                    }
                     return null;
                   },
                 ),
@@ -85,7 +84,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 const SizedBox(height: 24),
                 ElevatedButton(
-                  onPressed: () => _loginUser(context),
+                  onPressed: _loginUser,
                   child: const Padding(
                     padding: EdgeInsets.symmetric(vertical: 12),
                     child: Text('Login', style: TextStyle(fontSize: 24)),
