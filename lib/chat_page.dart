@@ -26,11 +26,15 @@ class _ChatPageState extends State<ChatPage> {
   Future<void> _loadInitialMessages() async {
     final response = await rootBundle.loadString('assets/mock_messages.json');
     final List<dynamic> decodeList = jsonDecode(response) as List;
-    final List<ChatMessageEntity> chatMessages =
-    decodeList.map((item) => ChatMessageEntity.fromJson(item)).toList();
 
     setState(() {
-      _messages = chatMessages;
+      _messages = decodeList.map((item) => ChatMessageEntity.fromJson(item)).toList();
+    });
+  }
+
+  void onMessageSent(ChatMessageEntity entity) {
+    setState(() {
+      _messages.add(entity);
     });
   }
 
@@ -39,39 +43,25 @@ class _ChatPageState extends State<ChatPage> {
     final username = ModalRoute.of(context)!.settings.arguments as String;
 
     return Scaffold(
-      appBar: AppBar(
+        appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
         title: Center(child: Text('Hi $username!')),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.logout),
-            onPressed: () {
-              Navigator.pushReplacementNamed(context, '/');
-              print('User logged out');
-            },
-          ),
-        ],
-      ),
-      body: Column(
-        children: [
-          Expanded(
-            child: ListView.builder(
-              itemCount: _messages.length,
-              itemBuilder: (context, index) {
-                final message = _messages[index];
-                return ChatBubble(
-                  alignment: message.author.userName == 'poojab26'
-                      ? Alignment.centerRight
-                      : Alignment.centerLeft,
-                  entity: message,
-                );
-              },
-            ),
-          ),
-          const ChatInput(),
-        ],
-      ),
-    );
-  }
-}
+    actions: [
+    IconButton(
+    icon: const Icon(Icons.logout),
+    onPressed: () {
+    Navigator.pushReplacementNamed(context, '/');
+    print('User logged out');
+    },
+    )
+    ],
+    ),
+    body: Column(
+    children: [
+    Expanded(
+    child: ListView.builder(
+    itemCount: _messages.length,
+    itemBuilder: (context, index) {
+    final message = _messages[index];
+    return ChatBubble(
