@@ -3,7 +3,8 @@ import 'package:chat_app/widgets/chat_bubble.dart';
 import 'package:chat_app/widgets/chat_input.dart';
 
 class ChatPage extends StatelessWidget {
-  const ChatPage({Key? key}) : super(key: key);
+  final String username;
+  const ChatPage({Key? key, required this.username}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +14,7 @@ class ChatPage extends StatelessWidget {
         backgroundColor: Colors.transparent,
         elevation: 0,
         centerTitle: true,
-        title: const Text('Hi Mark!'),
+        title: Text('Hi $username!'),
         actions: [
           IconButton(
             onPressed: () {
@@ -29,13 +30,17 @@ class ChatPage extends StatelessWidget {
             child: ListView.builder(
               padding: const EdgeInsets.all(16),
               itemCount: 10,
-              itemBuilder: (ctx, i) => ChatBubble(
-                alignment: i.isEven ? Alignment.centerLeft : Alignment.centerRight,
-                message: 'Hello, this is Ivan!',
-              ),
+              itemBuilder: (context, index) {
+                return ChatBubble(
+                  alignment: index.isEven
+                      ? Alignment.centerLeft
+                      : Alignment.centerRight,
+                  message: 'Hello, this is Ivan!',
+                );
+              },
             ),
           ),
-          ChatInput(),
+          const ChatInput(),
         ],
       ),
     );

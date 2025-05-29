@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:chat_app/chat_page.dart';
+import 'package:chat_app/widgets/chat_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -21,11 +21,11 @@ class _LoginPageState extends State<LoginPage> {
 
   void _loginUser(BuildContext context) {
     if (_formKey.currentState?.validate() ?? false) {
-      debugPrint('Username: ${_userNameController.text}');
-      debugPrint('Password: ${_passwordController.text}');
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (_) => const ChatPage()),
+        MaterialPageRoute(
+          builder: (_) => ChatPage(username: _userNameController.text),
+        ),
       );
     } else {
       debugPrint('Form is invalid');
@@ -80,9 +80,8 @@ class _LoginPageState extends State<LoginPage> {
                     hintText: 'Type your password',
                     border: OutlineInputBorder(),
                   ),
-                  validator: (v) => (v == null || v.isEmpty)
-                      ? 'Please type your password'
-                      : null,
+                  validator: (v) =>
+                  (v == null || v.isEmpty) ? 'Please type your password' : null,
                 ),
                 const SizedBox(height: 24),
                 ElevatedButton(
