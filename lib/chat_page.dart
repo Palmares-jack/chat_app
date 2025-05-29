@@ -1,32 +1,39 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:chat_app/models/chat_message_entity.dart';
-import 'package:chat_app/widgets/chat_bubble.dart';
-import 'package:chat_app/widgets/chat_input.dart';
+import 'package:flutter/services.dart';
 
-class ChatPage extends StatelessWidget {
-  ChatPage({Key? key}) : super(key: key);
+import 'models/chat_message_entity.dart';
+import 'widgets/chat_bubble.dart';
+import 'widgets/chat_input.dart';
 
-  final List<ChatMessageEntity> _messages = [
-    ChatMessageEntity(
-      author: Author(userName: 'pooja'),
-      createdAt: 2131231242,
-      id: '1',
-      text: 'First text',
-    ),
-    ChatMessageEntity(
-      author: Author(userName: 'pooja'),
-      createdAt: 2131231442,
-      id: '2',
-      text: 'Second text',
-      imageUrl: 'https://3009709.youcanlearnit.net/Alien_LIL_131338.png',
-    ),
-    ChatMessageEntity(
-      author: Author(userName: 'jane'),
-      createdAt: 2131234242,
-      id: '3',
-      text: 'Third text',
-    ),
-  ];
+class ChatPage extends StatefulWidget {
+  const ChatPage({Key? key}) : super(key: key);
+
+  @override
+  State<ChatPage> createState() => _ChatPageState();
+}
+
+class _ChatPageState extends State<ChatPage> {
+  List<ChatMessageEntity> _messages = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _loadInitialMessages();
+  }
+
+  Future<void> _loadInitialMessages() async {
+    final response = await rootBundle.loadString('assets/mock_messages.json');
+    final List<dynamic> decodeList = jsonDecode(response) as List;
+
+    final chatMessages = decodeList.map((item) {
+      return ChatMessageEntity.fromJson(item);
+    }).toList();
+
+    setState(() {
+      _messages = chatMessages;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,10 +46,9 @@ class ChatPage extends StatelessWidget {
         title: Center(child: Text('Hi $username!')),
         actions: [
           IconButton(
-            icon: Icon(Icons.logout),
+            icon: const Icon(Icons.logout),
             onPressed: () {
               Navigator.pushReplacementNamed(context, '/');
-              print('Logout pressed!');
             },
           ),
         ],
@@ -53,17 +59,17 @@ class ChatPage extends StatelessWidget {
             child: ListView.builder(
               itemCount: _messages.length,
               itemBuilder: (context, index) {
-                final message = _messages[index];
+                final msg = _messages[index];
                 return ChatBubble(
-                  alignment: message.author.userName == 'pooja'
+                  alignment: msg.author.userName == username
                       ? Alignment.centerRight
                       : Alignment.centerLeft,
-                  entity: message,
+                  entity: msg,
                 );
               },
             ),
           ),
-          ChatInput(),
+          const ChatInput(),
         ],
       ),
     );
