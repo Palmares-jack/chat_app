@@ -73,7 +73,7 @@ class ChatPage extends StatelessWidget {
                 _buildMessage(
                   message: 'Another message!',
                   imageUrl: 'https://3009709.youcanlearnit.net/Alien_LIL_131338.png',
-                  isSender: false,
+                  isSender: true,
                 ),
               ],
             ),
