@@ -10,13 +10,25 @@ class CounterStateful extends StatefulWidget {
 }
 
 class _CounterStatefulState extends State<CounterStateful> {
-  int _counter = 0;
+  int counter = 0;
 
-  void _increment() {
+  void increment() {
     setState(() {
-      _counter++;
+      counter++;
     });
-    debugPrint('Counter: $_counter');
+    print(counter);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    // Add any initialization code here if needed
+  }
+
+  @override
+  void dispose() {
+    // Add any cleanup code here if needed
+    super.dispose();
   }
 
   @override
@@ -27,12 +39,12 @@ class _CounterStatefulState extends State<CounterStateful> {
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: widget.buttonColor,
-        onPressed: _increment,
+        onPressed: increment,
         child: const Icon(Icons.add),
       ),
       body: Center(
         child: Text(
-          '$_counter',
+          '$counter',
           style: const TextStyle(fontSize: 30),
         ),
       ),
