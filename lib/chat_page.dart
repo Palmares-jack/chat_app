@@ -3,29 +3,36 @@ import 'package:flutter/material.dart';
 class ChatPage extends StatelessWidget {
   const ChatPage({Key? key}) : super(key: key);
 
-  Widget _buildMessageBubble(String message, String imageUrl) {
-    return Container(
-      padding: const EdgeInsets.all(24),
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-      decoration: const BoxDecoration(
-        color: Colors.grey,
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(12),
-          topRight: Radius.circular(12),
-          bottomLeft: Radius.circular(12),
-        ),
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            message,
-            style: const TextStyle(fontSize: 20, color: Colors.white),
+  Widget _buildMessage({
+    required String message,
+    required String imageUrl,
+    required bool isSender,
+  }) {
+    return Align(
+      alignment: isSender ? Alignment.centerRight : Alignment.centerLeft,
+      child: Container(
+        padding: const EdgeInsets.all(24),
+        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        decoration: const BoxDecoration(
+          color: Colors.grey,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(12),
+            topRight: Radius.circular(12),
+            bottomLeft: Radius.circular(12),
           ),
-          const SizedBox(height: 10),
-          Image.network(imageUrl, height: 200),
-        ],
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: isSender ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+          children: [
+            Text(
+              message,
+              style: const TextStyle(fontSize: 20, color: Colors.white),
+            ),
+            const SizedBox(height: 10),
+            Image.network(imageUrl, height: 200),
+          ],
+        ),
       ),
     );
   }
@@ -41,7 +48,7 @@ class ChatPage extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () {
-              print('Logout icon pressed!');
+              print('Logout pressed');
             },
             icon: const Icon(Icons.logout, color: Colors.black),
           ),
@@ -53,17 +60,20 @@ class ChatPage extends StatelessWidget {
             child: ListView(
               padding: const EdgeInsets.only(top: 10),
               children: [
-                _buildMessageBubble(
-                  'Hi this is your message!',
-                  'https://3009709.youcanlearnit.net/Alien_LIL_131338.png',
+                _buildMessage(
+                  message: 'Hi this is your message!',
+                  imageUrl: 'https://3009709.youcanlearnit.net/Alien_LIL_131338.png',
+                  isSender: false,
                 ),
-                _buildMessageBubble(
-                  'Another message!',
-                  'https://3009709.youcanlearnit.net/Alien_LIL_131338.png',
+                _buildMessage(
+                  message: 'Reply from sender!',
+                  imageUrl: 'https://3009709.youcanlearnit.net/Alien_LIL_131338.png',
+                  isSender: true,
                 ),
-                _buildMessageBubble(
-                  'And one more message!',
-                  'https://3009709.youcanlearnit.net/Alien_LIL_131338.png',
+                _buildMessage(
+                  message: 'Another message!',
+                  imageUrl: 'https://3009709.youcanlearnit.net/Alien_LIL_131338.png',
+                  isSender: false,
                 ),
               ],
             ),
