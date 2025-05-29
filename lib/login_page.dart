@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:chat_app/chat_page.dart';
-import 'package:chat_app/utils/textfield_styles.dart';
+import 'package:chat_app/utils/spaces.dart';
 import 'package:chat_app/widgets/login_text_field.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
+
   @override
   State<LoginPage> createState() => _LoginPageState();
 }
@@ -44,50 +45,45 @@ class _LoginPageState extends State<LoginPage> {
             key: _formKey,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Text(
                   'Let’s sign you in!',
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                 ),
-                const SizedBox(height: 10),
+                verticalSpacing(10),
                 const Text(
                   'Welcome back!\nYou’ve been missed!',
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 20, color: Colors.blueGrey),
                 ),
-                const SizedBox(height: 20),
-                Image.network(
-                  'https://3009709.youcanlearnit.net/Alien_LIL_131338.png',
+                verticalSpacing(20),
+                Image.asset(
+                  'assets/illustration.png',
                   height: 200,
                 ),
-                const SizedBox(height: 20),
+                verticalSpacing(20),
                 LoginTextField(
                   controller: _userNameController,
                   hintText: 'Enter your username',
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter a username';
-                    }
-                    if (value.length < 5) {
-                      return 'Username must be at least 5 characters';
-                    }
+                  validator: (v) {
+                    if (v == null || v.isEmpty) return 'Please enter a username';
+                    if (v.length < 5) return 'Username must be at least 5 characters';
                     return null;
                   },
                 ),
-                const SizedBox(height: 16),
+                verticalSpacing(24),
                 LoginTextField(
                   controller: _passwordController,
                   hintText: 'Enter your password',
                   hasAsterisks: true,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter a password';
-                    }
+                  validator: (v) {
+                    if (v == null || v.isEmpty) return 'Please enter a password';
                     return null;
                   },
                 ),
-                const SizedBox(height: 24),
+                verticalSpacing(24),
                 ElevatedButton(
                   onPressed: _loginUser,
                   child: const Padding(
@@ -95,7 +91,7 @@ class _LoginPageState extends State<LoginPage> {
                     child: Text('Login', style: TextStyle(fontSize: 24)),
                   ),
                 ),
-                const SizedBox(height: 16),
+                verticalSpacing(16),
                 InkWell(
                   splashColor: Colors.red,
                   onTap: () => debugPrint('Link clicked!'),
