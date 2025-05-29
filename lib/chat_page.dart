@@ -1,116 +1,120 @@
 import 'package:flutter/material.dart';
+import 'chat_bubble.dart';
+import 'chat_input.dart';
 
 class ChatPage extends StatelessWidget {
   const ChatPage({Key? key}) : super(key: key);
-
-  Widget _buildMessage({
-    required String message,
-    required String imageUrl,
-    required bool isSender,
-  }) {
-    return Align(
-      alignment: isSender ? Alignment.centerRight : Alignment.centerLeft,
-      child: Container(
-        padding: const EdgeInsets.all(24),
-        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        decoration: const BoxDecoration(
-          color: Colors.grey,
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(12),
-            topRight: Radius.circular(12),
-            bottomLeft: Radius.circular(12),
-          ),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: isSender ? CrossAxisAlignment.end : CrossAxisAlignment.start,
-          children: [
-            Text(
-              message,
-              style: const TextStyle(fontSize: 20, color: Colors.white),
-            ),
-            const SizedBox(height: 10),
-            Image.network(imageUrl, height: 200),
-          ],
-        ),
-      ),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black12,
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        title: const Text('Hi Mark!', style: TextStyle(color: Colors.black)),
+        title: const Text("Chat"),
+        backgroundColor: Colors.black,
         actions: [
           IconButton(
             onPressed: () {
               print('Logout pressed');
             },
-            icon: const Icon(Icons.logout, color: Colors.black),
+            icon: const Icon(Icons.logout),
           ),
         ],
       ),
       body: Column(
-        children: [
+        children: const [
           Expanded(
             child: ListView(
-              padding: const EdgeInsets.only(top: 10),
+              padding: EdgeInsets.all(16),
               children: [
-                _buildMessage(
-                  message: 'Hi this is your message!',
-                  imageUrl: 'https://3009709.youcanlearnit.net/Alien_LIL_131338.png',
-                  isSender: false,
+                ChatBubble(
+                  alignment: Alignment.centerLeft,
+                  message: "Hello, this is Ivan!",
                 ),
-                _buildMessage(
-                  message: 'Reply from sender!',
-                  imageUrl: 'https://3009709.youcanlearnit.net/Alien_LIL_131338.png',
-                  isSender: true,
+                ChatBubble(
+                  alignment: Alignment.centerRight,
+                  message: "Hi Ivan, how can I help you?",
                 ),
-                _buildMessage(
-                  message: 'Another message!',
-                  imageUrl: 'https://3009709.youcanlearnit.net/Alien_LIL_131338.png',
-                  isSender: true,
+                ChatBubble(
+                  alignment: Alignment.centerLeft,
+                  message: "Can you tell me more about your services?",
                 ),
               ],
             ),
           ),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            height: 70,
-            decoration: const BoxDecoration(
-              color: Colors.black,
-              borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+          ChatInput(),
+        ],
+      ),
+    );
+  }
+}
+import 'package:flutter/material.dart';
+
+class ChatBubble extends StatelessWidget {
+  final Alignment alignment;
+  final String message;
+
+  const ChatBubble({
+    Key? key,
+    required this.alignment,
+    required this.message,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Align(
+      alignment: alignment,
+      child: Container(
+        margin: const EdgeInsets.symmetric(vertical: 6),
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.grey[800],
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Text(
+          message,
+          style: const TextStyle(color: Colors.white, fontSize: 16),
+        ),
+      ),
+    );
+  }
+}
+import 'package:flutter/material.dart';
+
+class ChatInput extends StatelessWidget {
+  const ChatInput({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12),
+      decoration: const BoxDecoration(
+        color: Colors.black,
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      child: Row(
+        children: [
+          IconButton(
+            onPressed: () {
+              print('Add pressed');
+            },
+            icon: const Icon(Icons.add, color: Colors.white),
+          ),
+          const Expanded(
+            child: TextField(
+              style: TextStyle(color: Colors.white),
+              decoration: InputDecoration(
+                hintText: "Type a message...",
+                hintStyle: TextStyle(color: Colors.white54),
+                border: InputBorder.none,
+              ),
             ),
-            child: Row(
-              children: [
-                IconButton(
-                  onPressed: () {
-                    print('Add pressed');
-                  },
-                  icon: const Icon(Icons.add, color: Colors.white),
-                ),
-                const Expanded(
-                  child: TextField(
-                    decoration: InputDecoration(
-                      hintText: 'Type a message...',
-                      hintStyle: TextStyle(color: Colors.white54),
-                      border: InputBorder.none,
-                    ),
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
-                IconButton(
-                  onPressed: () {
-                    print('Send pressed');
-                  },
-                  icon: const Icon(Icons.send, color: Colors.white),
-                ),
-              ],
-            ),
+          ),
+          IconButton(
+            onPressed: () {
+              print('Send pressed');
+            },
+            icon: const Icon(Icons.send, color: Colors.white),
           ),
         ],
       ),
