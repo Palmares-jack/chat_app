@@ -18,7 +18,7 @@ class ChatMessageEntity {
       text: json['text'],
       id: json['id'],
       createdAt: json['createdAt'],
-      imageUrl: json['image'], // Adjust if JSON uses a different key
+      imageUrl: json['image'], // JSON field for image URL
       author: Author.fromJson(json['author']),
     );
   }

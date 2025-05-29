@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -25,10 +26,8 @@ class _ChatPageState extends State<ChatPage> {
   Future<void> _loadInitialMessages() async {
     final response = await rootBundle.loadString('assets/mock_messages.json');
     final List<dynamic> decodeList = jsonDecode(response) as List;
-
-    final chatMessages = decodeList.map((item) {
-      return ChatMessageEntity.fromJson(item);
-    }).toList();
+    final List<ChatMessageEntity> chatMessages =
+    decodeList.map((item) => ChatMessageEntity.fromJson(item)).toList();
 
     setState(() {
       _messages = chatMessages;
@@ -49,6 +48,7 @@ class _ChatPageState extends State<ChatPage> {
             icon: const Icon(Icons.logout),
             onPressed: () {
               Navigator.pushReplacementNamed(context, '/');
+              print('User logged out');
             },
           ),
         ],
@@ -59,12 +59,12 @@ class _ChatPageState extends State<ChatPage> {
             child: ListView.builder(
               itemCount: _messages.length,
               itemBuilder: (context, index) {
-                final msg = _messages[index];
+                final message = _messages[index];
                 return ChatBubble(
-                  alignment: msg.author.userName == username
+                  alignment: message.author.userName == 'poojab26'
                       ? Alignment.centerRight
                       : Alignment.centerLeft,
-                  entity: msg,
+                  entity: message,
                 );
               },
             ),
