@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:chat_app/chat_page.dart';
+import 'package:chat_app/utils/textfield_styles.dart';
+import 'package:chat_app/widgets/login_text_field.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -8,8 +11,8 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
-  final _userNameController = TextEditingController();
-  final _passwordController = TextEditingController();
+  final TextEditingController _userNameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
   @override
   void dispose() {
@@ -59,32 +62,30 @@ class _LoginPageState extends State<LoginPage> {
                   height: 200,
                 ),
                 const SizedBox(height: 20),
-                TextFormField(
+                LoginTextField(
                   controller: _userNameController,
-                  decoration: const InputDecoration(
-                    hintText: 'Username',
-                    border: OutlineInputBorder(),
-                  ),
-                  validator: (v) {
-                    if (v == null || v.isEmpty) {
+                  hintText: 'Enter your username',
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
                       return 'Please enter a username';
                     }
-                    if (v.length < 5) {
-                      return 'At least 5 characters required';
+                    if (value.length < 5) {
+                      return 'Username must be at least 5 characters';
                     }
                     return null;
                   },
                 ),
                 const SizedBox(height: 16),
-                TextFormField(
+                LoginTextField(
                   controller: _passwordController,
-                  obscureText: true,
-                  decoration: const InputDecoration(
-                    hintText: 'Password',
-                    border: OutlineInputBorder(),
-                  ),
-                  validator: (v) =>
-                  (v == null || v.isEmpty) ? 'Please enter a password' : null,
+                  hintText: 'Enter your password',
+                  hasAsterisks: true,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter a password';
+                    }
+                    return null;
+                  },
                 ),
                 const SizedBox(height: 24),
                 ElevatedButton(
@@ -92,6 +93,26 @@ class _LoginPageState extends State<LoginPage> {
                   child: const Padding(
                     padding: EdgeInsets.symmetric(vertical: 12),
                     child: Text('Login', style: TextStyle(fontSize: 24)),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                InkWell(
+                  splashColor: Colors.red,
+                  onTap: () => debugPrint('Link clicked!'),
+                  onDoubleTap: () => debugPrint('Double tapped!'),
+                  onLongPress: () => debugPrint('Long pressed!'),
+                  child: Column(
+                    children: const [
+                      Text('Find us on'),
+                      SizedBox(height: 4),
+                      Text(
+                        'https://google.com',
+                        style: TextStyle(
+                          color: Colors.blue,
+                          decoration: TextDecoration.underline,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],
